@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <langversion>latest</langversion>
+    <Version>0.2.2</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputPath>./bin/</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <SatelliteResourceLanguages>en-US;en</SatelliteResourceLanguages>
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishSelfContained>false</PublishSelfContained>
+    <PublishReferencesDocumentationFiles>false</PublishReferencesDocumentationFiles>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Commandline.Dragonfruit" Version="0.4.0-alpha.22272.1"
+      ExcludeAssets="true" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../dev.mamallama.checkrunnerlib/dev.mamallama.checkrunnerlib.csproj" />
+  </ItemGroup>
+
+</Project>
