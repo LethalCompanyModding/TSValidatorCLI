@@ -1,6 +1,6 @@
 using dev.mamallama.checkrunnerlib.CheckRunners;
 
-namespace TSTestTool.Packages;
+namespace TSTestTool.TSPackage.CheckRunners;
 
 internal abstract class BaseTSCheckRunner(Package BasePackage) : BaseCheckRunner
 {

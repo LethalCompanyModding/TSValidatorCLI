@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using TSTestTool.Packages;
+using TSTestTool.TSPackage;
 using TSTestTool.StringBuilderWrapper;
 
 namespace TSTestTool;

@@ -1,7 +1,7 @@
 using System.IO;
 using dev.mamallama.checkrunnerlib.Checks;
 
-namespace TSTestTool.Packages.Checks;
+namespace TSTestTool.TSPackage.Checks;
 
 internal class FileExistsCheck(string FileName, CheckStatus ErrorLevel = CheckStatus.Failed) : BaseCheck(ErrorLevel)
 {

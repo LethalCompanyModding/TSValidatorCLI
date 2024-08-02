@@ -2,7 +2,7 @@ using System.IO;
 using System.Collections.Generic;
 using dev.mamallama.checkrunnerlib.Checks;
 
-namespace TSTestTool.Packages.Checks;
+namespace TSTestTool.TSPackage.Checks;
 
 internal class PNGValidationCheck(string FileName, CheckStatus ErrorLevel = CheckStatus.Failed) : BaseCheck(ErrorLevel)
 {

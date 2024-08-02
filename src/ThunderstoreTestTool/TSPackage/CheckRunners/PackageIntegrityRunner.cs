@@ -1,6 +1,6 @@
 using dev.mamallama.checkrunnerlib.Checks;
 
-namespace TSTestTool.Packages.CheckRunners;
+namespace TSTestTool.TSPackage.CheckRunners;
 
 internal class PackageIntegrityRunner(Package BasePackage) : BaseTSCheckRunner(BasePackage)
 {

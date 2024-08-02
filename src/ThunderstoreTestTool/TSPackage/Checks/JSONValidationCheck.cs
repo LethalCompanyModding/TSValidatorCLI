@@ -4,7 +4,7 @@ using System.Text.Json;
 using System.Collections.Generic;
 using dev.mamallama.checkrunnerlib.Checks;
 
-namespace TSTestTool.Packages.Checks;
+namespace TSTestTool.TSPackage.Checks;
 
 internal class JSONValidationCheck(string FileName, CheckStatus ErrorLevel = CheckStatus.Failed) : BaseCheck(ErrorLevel)
 {

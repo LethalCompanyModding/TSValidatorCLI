@@ -1,11 +1,11 @@
 using System;
 using System.IO;
-using TSTestTool.Packages.CheckRunners;
+using TSTestTool.TSPackage.CheckRunners;
 using TSTestTool.StringBuilderWrapper;
 using dev.mamallama.checkrunnerlib.Checks;
 using dev.mamallama.checkrunnerlib.CheckRunners;
 
-namespace TSTestTool.Packages;
+namespace TSTestTool.TSPackage;
 
 internal class Package(DirectoryInfo Folder)
 {
