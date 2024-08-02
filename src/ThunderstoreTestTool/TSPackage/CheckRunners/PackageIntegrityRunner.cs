@@ -1,13 +1,14 @@
+using dev.mamallama.checkrunnerlib.CheckRunners;
 using dev.mamallama.checkrunnerlib.Checks;
 
 namespace TSTestTool.TSPackage.CheckRunners;
 
-internal class PackageIntegrityRunner(Package BasePackage) : BaseTSCheckRunner(BasePackage)
+internal class PackageIntegrityRunner(CheckStatus ErrorLevel = CheckStatus.Fatal) : BaseTSCheckRunner(ErrorLevel)
 {
-    public override string CheckGroupID => "Package Integrity Check";
-    protected override ICheck[] MyChecks { get => checks; }
-    private readonly ICheck[] checks = [
-        new BasicIntegrityRunner(BasePackage),
-        new OptionalIntegrityRunner(BasePackage)
+    public override string CheckID => "Package Integrity Check";
+    public override ICheckRunner[] MyChecks { get => checks; }
+    private readonly ICheckRunner[] checks = [
+        new BasicIntegrityRunner(),
+        new OptionalIntegrityRunner()
     ];
 }

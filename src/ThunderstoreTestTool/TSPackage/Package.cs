@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using TSTestTool.TSPackage.CheckRunners;
 using TSTestTool.StringBuilderWrapper;
-using dev.mamallama.checkrunnerlib.Checks;
+using dev.mamallama.checkrunnerlib.CheckRunners;
 using dev.mamallama.checkrunnerlib.CheckRunners;
 
 namespace TSTestTool.TSPackage;
@@ -18,7 +18,7 @@ internal class Package(DirectoryInfo Folder)
         "config"
     ];
     public DirectoryInfo Folder { get; } = Folder;
-    protected readonly ICheckRunner[] Runners = [];
+    protected readonly ICheckRunnerRunner[] Runners = [];
 
     public void RunChecks(bool Print = true)
     {

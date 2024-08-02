@@ -1,98 +1,42 @@
 using System;
-using System.IO;
 using System.Text.Json;
-using System.Collections.Generic;
 using dev.mamallama.checkrunnerlib.Checks;
 
 namespace TSTestTool.TSPackage.Checks;
 
-internal class JSONValidationCheck(string FileName, CheckStatus ErrorLevel = CheckStatus.Failed) : BaseCheck(ErrorLevel)
+internal class JSONFieldValidationCheck(string Field, bool InverseCheck = false, CheckStatus ErrorLevel = CheckStatus.Failed) : BaseTSCheck(ErrorLevel)
 {
-    protected string FileName = FileName;
-    protected static Dictionary<string, bool> Fields = new(){
-      {"name", false},
-      {"description", false},
-      {"version_number", false},
-      {"dependencies", false},
-      {"website_url", false},
-    };
-    public override string CheckID => "JSON Validation";
+    public JsonElement rootElement;
+    protected string Field = Field;
+    public override string CheckID => $"Field Validation: {Field}";
 
-    public override CheckValidation RunCheck()
+    public override void RunChecks()
     {
-        FileInfo info = new(FileName);
-        List<CheckValidation> Validations = [];
-        CheckStatus status = CheckStatus.Succeeded;
-
-        if (!info.Exists)
-            return new(CheckID, CheckStatus.Fatal, $"{FileName} not found");
-
         try
         {
-            using (var fs = info.OpenRead())
+            foreach (JsonProperty item in rootElement.EnumerateObject())
             {
-                using (JsonDocument document = JsonDocument.Parse(fs, new JsonDocumentOptions() { MaxDepth = 2 }))
+                Console.WriteLine(item.Name);
+                if (Field == item.Name)
                 {
-                    foreach (JsonProperty item in document.RootElement.EnumerateObject())
-                    {
-                        Console.WriteLine(item.Name);
+                    if (InverseCheck)
+                        SetStateAndReason(CheckStatus.Warning, "Unsupported field");
+                    else
+                        SetStateAndReason(CheckStatus.Succeeded, "Field Validated");
 
-                        if (Fields.TryGetValue(item.Name, out bool value))
-                        {
-                            //We've already seen this term
-                            if (value)
-                            {
-                                Validations.Add(new("Duplicate Field", CheckStatus.Failed, item.Name));
-                                status = CheckStatus.Failed;
-                            }
-                            else
-                            {
-                                Validations.Add(new("Required Field", CheckStatus.Succeeded, item.Name));
-                                Fields[item.Name] = true;
-                            }
-                        }
-                        else
-                        {
-                            if (item.Name == "installers")
-                            {
-                                Validations.Add(new("Unused Field", CheckStatus.Warning, item.Name));
-
-                                if (status != CheckStatus.Failed)
-                                    status = CheckStatus.Warning;
-                            }
-                            else
-                            {
-                                Validations.Add(new("Unknown Extra Field", CheckStatus.Warning, item.Name));
-
-                                if (status != CheckStatus.Failed)
-                                    status = CheckStatus.Warning;
-                            }
-                        }
-
-                    }
+                    return;
                 }
             }
-        }
-        catch (Exception e) when (e is UnauthorizedAccessException or DirectoryNotFoundException or IOException)
-        {
-            //failed to read the file
-            return new CheckValidation(CheckID, CheckStatus.Fatal, "Unable to open manifest.json");
+
         }
         catch (Exception e) when (e is JsonException)
         {
-            return new CheckValidation(CheckID, CheckStatus.Fatal, "Unable to parse JSON, manifest.json is malformed");
+            SetStateAndReason(CheckStatus.Fatal, "Unable to parse root element");
+            return;
         }
 
-        foreach (string item in Fields.Keys)
-        {
-            if (!Fields[item])
-            {
-                Validations.Add(new("Required Field Missing", CheckStatus.Failed, item));
-                status = CheckStatus.Failed;
-            }
-        }
-
-        return new(CheckID, status, "", [.. Validations]);
-
+        SetStateAndReason(InverseCheck ?
+        CheckStatus.Succeeded : CheckStatus.Failed,
+        "Field does not exist in document");
     }
 }

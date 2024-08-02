@@ -1,30 +1,16 @@
 using TSTestTool.TSPackage.Checks;
 using dev.mamallama.checkrunnerlib.Checks;
+using dev.mamallama.checkrunnerlib.CheckRunners;
 
 namespace TSTestTool.TSPackage.CheckRunners;
 
-internal class OptionalIntegrityRunner(Package BasePackage) : BasicIntegrityRunner(BasePackage)
+internal class OptionalIntegrityRunner(CheckStatus ErrorLevel = CheckStatus.Fatal) : BaseTSCheckRunner(ErrorLevel)
 {
-    public override string CheckGroupID => "Optional Package Integrity";
-    protected override ICheck[] MyChecks => checks;
-    private readonly ICheck[] checks = [
-        new FileExistsCheck("Changelog.md"),
-        new FileExistsCheck("LICENSE"),
+    public override string CheckID => "Optional Package Integrity";
+    public override ICheckRunner[] MyChecks => checks;
+    private readonly ICheckRunner[] checks = [
+        new FileExistsCheck("Changelog.md", CheckStatus.Warning),
+        new FileExistsCheck("LICENSE", CheckStatus.Warning),
     ];
-
-    protected override void UpdateState(CheckValidation[] Validations)
-    {
-        //strict checking
-        foreach (var item in Validations)
-        {
-            if (item.Passed != CheckStatus.Succeeded)
-            {
-                State = CheckStatus.Warning;
-                return;
-            }
-        }
-
-        State = CheckStatus.Succeeded;
-    }
 }
 

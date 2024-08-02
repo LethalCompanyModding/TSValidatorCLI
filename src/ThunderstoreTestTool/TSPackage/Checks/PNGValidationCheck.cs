@@ -4,12 +4,12 @@ using dev.mamallama.checkrunnerlib.Checks;
 
 namespace TSTestTool.TSPackage.Checks;
 
-internal class PNGValidationCheck(string FileName, CheckStatus ErrorLevel = CheckStatus.Failed) : BaseCheck(ErrorLevel)
+internal class PNGValidationCheck(string FileName, CheckStatus ErrorLevel = CheckStatus.Failed) : BaseTSCheckRunner(ErrorLevel)
 {
     protected string FileName = FileName;
     public override string CheckID => "PNG Validation";
 
-    public override CheckValidation RunCheck()
+    public override void RunCheck()
     {
         FileInfo info = new(FileName);
         List<CheckValidation> Validations = [];
