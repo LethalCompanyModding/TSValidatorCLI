@@ -3,13 +3,13 @@ using System.IO;
 using TSTestTool.TSPackage.CheckRunners;
 using TSTestTool.StringBuilderWrapper;
 using dev.mamallama.checkrunnerlib.CheckRunners;
-using dev.mamallama.checkrunnerlib.CheckRunners;
+using dev.mamallama.checkrunnerlib.Checks;
 
 namespace TSTestTool.TSPackage;
 
 internal class Package(DirectoryInfo Folder)
 {
-    private PackageIntegrityRunner? runner;
+    private readonly PackageIntegrityRunner runner = new();
 
     protected static string[] Overrides = [
         "plugins",
@@ -18,14 +18,11 @@ internal class Package(DirectoryInfo Folder)
         "config"
     ];
     public DirectoryInfo Folder { get; } = Folder;
-    protected readonly ICheckRunnerRunner[] Runners = [];
 
     public void RunChecks(bool Print = true)
     {
-        runner ??= new(this);
 
-        var validation = runner.RunCheck();
-
+        runner.RunChecks();
 
         Console.WriteLine("-----------------------------------------------");
         Console.Write("  Checking Package [");
@@ -36,9 +33,10 @@ internal class Package(DirectoryInfo Folder)
         Console.WriteLine("-----------------------------------------------");
         Console.WriteLine();
 
-        PrintValidationToConsole(validation, 0);
+        //PrintValidationToConsole(validation, 0);
     }
 
+    /*
     protected static void PrintValidationToConsole(CheckValidation Validation, int Indent)
     {
 
@@ -80,5 +78,5 @@ internal class Package(DirectoryInfo Folder)
             }
         }
 
-    }
+    */
 }

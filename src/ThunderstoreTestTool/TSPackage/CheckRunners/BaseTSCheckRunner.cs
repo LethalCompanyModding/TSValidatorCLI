@@ -15,8 +15,8 @@ internal abstract class BaseTSCheckRunner(CheckStatus ErrorLevel = CheckStatus.F
     public string? Because { get; private set; }
     protected override void UpdateState(CheckStatus IncState)
     {
-        if ((int)IncState > (int)State)
-            return;
+        if ((int)IncState > (int)ErrorLevel)
+            IncState = ErrorLevel;
 
         base.UpdateState(IncState);
     }

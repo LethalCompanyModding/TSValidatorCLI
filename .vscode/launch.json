@@ -12,7 +12,7 @@
                 "task": "build",
                 "type": "dotnet"
             },
-            "program": "${workspaceFolder}/src/LogMuncher/bin/ThunderstoreTestTool.dll",
+            "program": "${workspaceFolder}/src/ThunderstoreTestTool/bin/ThunderstoreTestTool.dll",
             "args": [
                 "-f",
                 "${workspaceFolder}/test-package"

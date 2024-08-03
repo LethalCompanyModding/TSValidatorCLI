@@ -13,7 +13,8 @@ internal class JSONValidationCheckRunner(string FileName, CheckStatus ErrorLevel
     public override string CheckID => "JSON Validation";
 
     public override ICheckRunner[] MyChecks => checks;
-    private readonly JSONFieldValidationCheck[] checks = [
+    private readonly BaseTSCheck[] checks = [
+        new FileExistsCheck("manifest.json", CheckStatus.Failed),
         new JSONFieldValidationCheck("name"),
         new JSONFieldValidationCheck("description"),
         new JSONFieldValidationCheck("version_number"),
@@ -24,6 +25,7 @@ internal class JSONValidationCheckRunner(string FileName, CheckStatus ErrorLevel
 
     public override void RunChecks()
     {
+
         FileInfo info = new(FileName);
 
         if (!info.Exists)
@@ -40,7 +42,10 @@ internal class JSONValidationCheckRunner(string FileName, CheckStatus ErrorLevel
             //set the root element for each JSON item
             foreach (var item in checks)
             {
-                item.rootElement = document.RootElement;
+                if (item is JSONFieldValidationCheck json)
+                {
+                    json.rootElement = document.RootElement;
+                }
             }
 
             //Run checks and update my state

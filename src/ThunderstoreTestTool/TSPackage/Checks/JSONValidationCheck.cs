@@ -4,7 +4,7 @@ using dev.mamallama.checkrunnerlib.Checks;
 
 namespace TSTestTool.TSPackage.Checks;
 
-internal class JSONFieldValidationCheck(string Field, bool InverseCheck = false, CheckStatus ErrorLevel = CheckStatus.Failed) : BaseTSCheck(ErrorLevel)
+internal class JSONFieldValidationCheck(string Field, bool InverseCheck = false, CheckStatus ErrorLevel = CheckStatus.Fatal) : BaseTSCheck(ErrorLevel)
 {
     public JsonElement rootElement;
     protected string Field = Field;
