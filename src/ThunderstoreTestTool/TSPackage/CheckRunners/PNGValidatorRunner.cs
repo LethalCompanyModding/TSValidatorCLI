@@ -24,7 +24,7 @@ internal class PNGValidatorRunner(string FileName, CheckStatus ErrorLevel = Chec
 
         if (!info.Exists)
         {
-            SetStateAndReason(CheckStatus.Fatal, $"Unable to open {FileName}");
+            SetStateAndReason(CheckStatus.Fatal, $"{FileName} not found");
             return;
         }
 

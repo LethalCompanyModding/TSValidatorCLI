@@ -46,6 +46,9 @@ internal static class ExtMethod
     internal static void GetValidationString(this BaseTSCheckRunner Runner, StringBuilder sb, int Indent)
     {
 
+        if (Runner.State == CheckStatus.Pending)
+            return;
+
         string Tabs(int n)
         {
             return new string(' ', n * 2);
@@ -64,20 +67,33 @@ internal static class ExtMethod
         //If the runner is a leaf output it's _Because_ value underneath it
         if (Runner.MyChecks.Length == 0)
         {
-            //Leaf
+            //Leaf runners
+
             sb.Append(Tabs(Indent + 1));
             sb.AppendLine(Runner.Because);
         }
         else
         {
-            //Branch
-            foreach (var runner in Runner.MyChecks)
+            //Branch runners
+
+            //A runner that is fatal by its own pre-checks needs to output its because
+            if (Runner.State == CheckStatus.Fatal && Runner.Because is not null)
             {
-                if (runner is BaseTSCheckRunner tsRunner)
+                sb.Append(Tabs(Indent + 1));
+                sb.AppendLine(Runner.Because);
+            }
+            else
+            {
+                //Descend into non-fatal runners
+                foreach (var runner in Runner.MyChecks)
                 {
-                    tsRunner.GetValidationString(sb, Indent + 1);
+                    if (runner is BaseTSCheckRunner tsRunner)
+                    {
+                        tsRunner.GetValidationString(sb, Indent + 1);
+                    }
                 }
             }
+
             sb.AppendLine();
         }
 
