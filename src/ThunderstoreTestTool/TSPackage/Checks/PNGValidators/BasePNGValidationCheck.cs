@@ -23,12 +23,12 @@ internal abstract class BasePNGValidationCheck(int Offset, byte[] matches, strin
         Span<byte> data = new(Data, Offset, 4);
         Span<byte> pattern = new(matches, 0, 4);
 
-        if (data == pattern)
+        if (data.SequenceEqual(pattern))
         {
-            SetStateAndReason(CheckStatus.Failed, $"{Matching} does not match");
+            SetStateAndReason(CheckStatus.Succeeded, $"{Matching} validated");
             return;
         }
 
-        SetStateAndReason(CheckStatus.Failed, $"{Matching} validated");
+        SetStateAndReason(CheckStatus.Failed, $"{Matching} failed to validate");
     }
 }

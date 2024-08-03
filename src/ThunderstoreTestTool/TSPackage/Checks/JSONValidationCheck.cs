@@ -16,7 +16,8 @@ internal class JSONFieldValidationCheck(string Field, bool InverseCheck = false,
         {
             foreach (JsonProperty item in rootElement.EnumerateObject())
             {
-                Console.WriteLine(item.Name);
+                //Console.WriteLine(item.Name);
+
                 if (Field == item.Name)
                 {
                     if (InverseCheck)

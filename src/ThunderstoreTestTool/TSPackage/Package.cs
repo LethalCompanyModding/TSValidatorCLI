@@ -4,6 +4,7 @@ using TSTestTool.TSPackage.CheckRunners;
 using TSTestTool.StringBuilderWrapper;
 using dev.mamallama.checkrunnerlib.CheckRunners;
 using dev.mamallama.checkrunnerlib.Checks;
+using System.Text;
 
 namespace TSTestTool.TSPackage;
 
@@ -33,50 +34,52 @@ internal class Package(DirectoryInfo Folder)
         Console.WriteLine("-----------------------------------------------");
         Console.WriteLine();
 
-        //PrintValidationToConsole(validation, 0);
+        var sb = new StringBuilder();
+        runner.GetValidationString(sb, 0);
+
+        Console.Write(sb);
     }
+}
 
-    /*
-    protected static void PrintValidationToConsole(CheckValidation Validation, int Indent)
+internal static class ExtMethod
+{
+    internal static void GetValidationString(this BaseTSCheckRunner Runner, StringBuilder sb, int Indent)
     {
-
-        //Do not output pending or children of pending validations
-        if (Validation.Passed == CheckStatus.Pending)
-            return;
 
         string Tabs(int n)
         {
             return new string(' ', n * 2);
         }
 
-        //Print the current validation at the current Indentation level
-        using (StringBuilderDisposable sb = new(Tabs(Indent)))
-        {
-            sb.Append(Validation.CheckName);
-            sb.Append(" [");
-            sb.Append(Validation.Passed.GetColorCode());
-            sb.Append(Validation.Passed);
-            sb.Append(GetColorCode_Ext.COLOR_RESET);
-            sb.AppendLine("]");
-            Console.Write(sb);
-        }
+        //Output the runner's name
+        sb.Append(Tabs(Indent));
+        sb.Append(Runner.CheckID);
+        sb.Append(" [");
+        //And state
+        sb.Append(Runner.State.GetColorCode());
+        sb.Append(Runner.State);
+        sb.Append(GetColorCode_Ext.COLOR_RESET);
+        sb.AppendLine("]");
 
-        if (Validation.InnerValidations is not null)
+        //If the runner is a leaf output it's _Because_ value underneath it
+        if (Runner.MyChecks.Length == 0)
         {
-            foreach (var item in Validation.InnerValidations)
-            {
-                PrintValidationToConsole(item, Indent + 1);
-            }
+            //Leaf
+            sb.Append(Tabs(Indent + 1));
+            sb.AppendLine(Runner.Because);
         }
         else
         {
-            using (StringBuilderDisposable sb = new(Tabs(Indent + 1)))
+            //Branch
+            foreach (var runner in Runner.MyChecks)
             {
-                sb.Append(Validation.Because);
-                sb.AppendLine();
-                Console.Write(sb);
+                if (runner is BaseTSCheckRunner tsRunner)
+                {
+                    tsRunner.GetValidationString(sb, Indent + 1);
+                }
             }
+            sb.AppendLine();
         }
 
-    */
+    }
 }
