@@ -37,7 +37,7 @@ internal class JSONFieldValidationCheck(string Field, bool InverseCheck = false,
             }
 
         }
-        catch (Exception e) when (e is JsonException)
+        catch (JsonException)
         {
             Because.Add("Unable to parse root element");
             UpdateState(CheckStatus.Fatal);

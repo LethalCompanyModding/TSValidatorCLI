@@ -36,7 +36,7 @@ internal class Package(DirectoryInfo Folder)
         Console.WriteLine();
 
         var sb = new StringBuilder();
-        runner.GetValidationString(sb, 0);
+        runner.BuildValidationString(sb, 0);
 
         Console.Write(sb);
     }
@@ -44,7 +44,7 @@ internal class Package(DirectoryInfo Folder)
 
 internal static class ExtMethod
 {
-    internal static void GetValidationString(this BaseTSCheckRunner Runner, StringBuilder sb, int Indent)
+    internal static void BuildValidationString(this BaseTSCheckRunner Runner, StringBuilder sb, int Indent)
     {
 
         if (Runner.State == CheckStatus.Pending)
@@ -97,7 +97,7 @@ internal static class ExtMethod
                 {
                     if (runner is BaseTSCheckRunner tsRunner)
                     {
-                        tsRunner.GetValidationString(sb, Indent + 1);
+                        tsRunner.BuildValidationString(sb, Indent + 1);
                     }
                 }
             }
