@@ -1,8 +1,10 @@
 using System;
 using System.IO;
+using System.Text;
 using System.Text.Json;
 using dev.mamallama.checkrunnerlib.Checks;
 using dev.mamallama.checkrunnerlib.CheckRunners;
+
 using TSTestTool.TSPackage.Checks;
 
 namespace TSTestTool.TSPackage.CheckRunners;
@@ -30,7 +32,8 @@ internal class JSONValidationCheckRunner(string FileName, CheckStatus ErrorLevel
 
         if (!info.Exists)
         {
-            SetStateAndReason(CheckStatus.Fatal, $"{FileName} not found");
+            Because.Add($"{FileName} not found");
+            UpdateState(CheckStatus.Fatal);
             return;
         }
 
@@ -55,12 +58,29 @@ internal class JSONValidationCheckRunner(string FileName, CheckStatus ErrorLevel
         catch (Exception e) when (e is UnauthorizedAccessException or DirectoryNotFoundException or IOException)
         {
             //failed to read the file
-            SetStateAndReason(CheckStatus.Fatal, "Unable to open manifest.json");
+            Because.Add($"Unable to open file: {info.Name}");
+            UpdateState(CheckStatus.Fatal);
             return;
         }
-        catch (Exception e) when (e is JsonException)
+        catch (JsonException e)
         {
-            SetStateAndReason(CheckStatus.Fatal, "Unable to parse JSON, manifest.json is malformed");
+
+            //Output reason and state
+            Because.Add("Unable to parse JSON, manifest.json is malformed:");
+
+            if (e.Message.Contains('.'))
+                Because.Add(e.Message[..e.Message.IndexOf('.')]);
+            else
+                Because.Add(e.Message);
+
+
+            Because.Add("");
+
+            Because.Add($"  File: {info.Name}");
+            Because.Add($"  On Line: {e.LineNumber}");
+            Because.Add($"  At Character: {e.BytePositionInLine}");
+            UpdateState(CheckStatus.Fatal);
+
             return;
         }
     }

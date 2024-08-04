@@ -21,9 +21,16 @@ internal class JSONFieldValidationCheck(string Field, bool InverseCheck = false,
                 if (Field == item.Name)
                 {
                     if (InverseCheck)
-                        SetStateAndReason(CheckStatus.Warning, "Unsupported field");
+                    {
+                        Because.Add("Unsupported field");
+                        UpdateState(CheckStatus.Warning);
+
+                    }
                     else
-                        SetStateAndReason(CheckStatus.Succeeded, "Field Validated");
+                    {
+                        Because.Add("Field Validated");
+                        UpdateState(CheckStatus.Succeeded);
+                    }
 
                     return;
                 }
@@ -32,12 +39,21 @@ internal class JSONFieldValidationCheck(string Field, bool InverseCheck = false,
         }
         catch (Exception e) when (e is JsonException)
         {
-            SetStateAndReason(CheckStatus.Fatal, "Unable to parse root element");
+            Because.Add("Unable to parse root element");
+            UpdateState(CheckStatus.Fatal);
             return;
         }
 
-        SetStateAndReason(InverseCheck ?
-        CheckStatus.Succeeded : CheckStatus.Failed,
-        "Field does not exist in document");
+        if (InverseCheck)
+        {
+            Because.Add("Unsupported field not found");
+            UpdateState(CheckStatus.Succeeded);
+
+        }
+        else
+        {
+            Because.Add("Required field not found");
+            UpdateState(CheckStatus.Failed);
+        }
     }
 }
