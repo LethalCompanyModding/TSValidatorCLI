@@ -5,6 +5,7 @@ using TSTestTool.StringBuilderWrapper;
 using dev.mamallama.checkrunnerlib.CheckRunners;
 using dev.mamallama.checkrunnerlib.Checks;
 using System.Text;
+using System.CodeDom.Compiler;
 
 namespace TSTestTool.TSPackage;
 
@@ -49,9 +50,18 @@ internal static class ExtMethod
         if (Runner.State == CheckStatus.Pending)
             return;
 
-        string Tabs(int n)
+        static string Tabs(int n)
         {
             return new string(' ', n * 2);
+        }
+
+        static void DumpBecause(BaseTSCheckRunner Runner, StringBuilder sb, int Indent)
+        {
+            foreach (var item in Runner.Because)
+            {
+                sb.Append(Tabs(Indent));
+                sb.AppendLine(item);
+            }
         }
 
         //Output the runner's name
@@ -68,19 +78,17 @@ internal static class ExtMethod
         if (Runner.MyChecks.Length == 0)
         {
             //Leaf runners
-
-            sb.Append(Tabs(Indent + 1));
-            sb.AppendLine(Runner.Because);
+            DumpBecause(Runner, sb, Indent + 1);
         }
         else
         {
             //Branch runners
 
             //A runner that is fatal by its own pre-checks needs to output its because
-            if (Runner.State == CheckStatus.Fatal && Runner.Because is not null)
+            if (Runner.State == CheckStatus.Fatal && Runner.Because.Count > 0)
             {
-                sb.Append(Tabs(Indent + 1));
-                sb.AppendLine(Runner.Because);
+                //Output runner reasons
+                DumpBecause(Runner, sb, Indent + 1);
             }
             else
             {
