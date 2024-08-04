@@ -9,7 +9,7 @@ namespace TSTestTool.TSPackage.CheckRunners;
 internal class PNGValidatorRunner(string FileName, CheckStatus ErrorLevel = CheckStatus.Fatal) : BaseTSCheckRunner(ErrorLevel)
 {
     public override string CheckID => "PNG Validator";
-    public override ICheckRunner[] MyChecks { get => checks; }
+    public override ICheckRunner[] MyChecks => checks;
     private readonly BaseTSCheck[] checks = [
         new FileExistsCheck("icon.png", ErrorLevel),
         new PNGHeaderValidationCheck(ErrorLevel),
@@ -24,7 +24,8 @@ internal class PNGValidatorRunner(string FileName, CheckStatus ErrorLevel = Chec
 
         if (!info.Exists)
         {
-            SetStateAndReason(CheckStatus.Fatal, $"{FileName} not found");
+            Because.Add($"{FileName} not found");
+            UpdateState(CheckStatus.Fatal);
             return;
         }
 

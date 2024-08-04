@@ -15,10 +15,12 @@ internal class FileExistsCheck(string FileName, CheckStatus ErrorLevel = CheckSt
 
         if (info.Exists)
         {
-            SetStateAndReason(CheckStatus.Succeeded, $"{FileName} found");
+            Because.Add($"{FileName} found");
+            UpdateState(CheckStatus.Succeeded);
             return;
         }
 
-        SetStateAndReason(CheckStatus.Failed, $"{FileName} not found");
+        Because.Add($"{FileName} not found");
+        UpdateState(CheckStatus.Failed);
     }
 }

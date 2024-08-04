@@ -16,7 +16,8 @@ internal abstract class BasePNGValidationCheck(int Offset, byte[] matches, strin
     {
         if (Data.Length < 24)
         {
-            SetStateAndReason(CheckStatus.Fatal, "Buffer is malformed");
+            Because.Add("Buffer is malformed");
+            UpdateState(CheckStatus.Fatal);
             return;
         }
 
@@ -25,10 +26,12 @@ internal abstract class BasePNGValidationCheck(int Offset, byte[] matches, strin
 
         if (data.SequenceEqual(pattern))
         {
-            SetStateAndReason(CheckStatus.Succeeded, $"{Matching} validated");
+            Because.Add($"{Matching} validated");
+            UpdateState(CheckStatus.Succeeded);
             return;
         }
 
-        SetStateAndReason(CheckStatus.Failed, $"{Matching} failed to validate");
+        Because.Add($"{Matching} failed to validate");
+        UpdateState(CheckStatus.Failed);
     }
 }
