@@ -17,14 +17,18 @@ internal class Program
     /// </para>
     /// </summary>
     /// <param name="f">The folder that contains your TS Package files</param>
-    static void Main(DirectoryInfo f)
+    /// <param name="RunUnitTests">[DEBUG BUILDS ONLY] Pass this switch to run full unit testing</param>
+    static void Main(DirectoryInfo f, bool RunUnitTests)
     {
 
 #if DEBUG
-        Console.Clear();
-        Console.WriteLine("Built in debug mode, running tests");
-        Debugging.Debugger.RunAllTests();
-        ReturnFromDebugging = true;
+        if (RunUnitTests)
+        {
+            Console.Clear();
+            Console.WriteLine("Built in debug mode, running tests");
+            Debugging.Debugger.RunAllTests();
+            ReturnFromDebugging = true;
+        }
 #endif
 
         if (ReturnFromDebugging)

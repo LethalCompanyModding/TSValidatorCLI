@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (console)",
+            "name": "Run Debugging",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": {
@@ -16,6 +16,24 @@
             "args": [
                 "-f",
                 "${workspaceFolder}/test-package"
+            ],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "Run Unit Tests",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": {
+                "task": "build",
+                "type": "dotnet"
+            },
+            "program": "${workspaceFolder}/src/ThunderstoreTestTool/bin/ThunderstoreTestTool.dll",
+            "args": [
+                "-f",
+                "${workspaceFolder}/test-package",
+                "--run-unit-tests"
             ],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
