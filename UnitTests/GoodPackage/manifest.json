@@ -1,0 +1,7 @@
+{
+    "name": "ExamplePackage",
+    "version_number": "1.0.0",
+    "website_url": "",
+    "description": "Example Description",
+    "dependencies": []
+}

@@ -1,0 +1,7 @@
+{
+    "name": "InvalidPackage",
+    "version_number": "1.0.0",
+    "website_url": "",
+    "description": "This Manifest.json will not validate due to a trailing comma",
+    "dependencies": [],
+}
