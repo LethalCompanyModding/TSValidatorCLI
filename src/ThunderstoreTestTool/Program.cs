@@ -7,6 +7,9 @@ namespace TSTestTool;
 
 internal class Program
 {
+
+    internal static bool ReturnFromDebugging = false;
+
     /// <summary>
     /// <para> 
     /// TSTestTool, the Thunderstore package tester
@@ -16,15 +19,23 @@ internal class Program
     /// <param name="f">The folder that contains your TS Package files</param>
     static void Main(DirectoryInfo f)
     {
+
+#if DEBUG
+        Console.Clear();
+        Console.WriteLine("Built in debug mode, running tests");
+        Debugging.Debugger.RunAllTests();
+        ReturnFromDebugging = true;
+#endif
+
+        if (ReturnFromDebugging)
+            return;
+
+
         f ??= new(Directory.GetCurrentDirectory());
 
         //Console.WriteLine($"Using directory {f.FullName}");
 
         Package package = new(f);
-
-        //Set the working directory to the given directory
-        var wDir = Directory.GetCurrentDirectory();
-        Directory.SetCurrentDirectory(f.FullName);
 
         try
         {
@@ -39,11 +50,6 @@ internal class Program
             sb.Append("  ");
             sb.AppendLine(e.Message);
             Console.WriteLine(sb);
-        }
-        finally
-        {
-            //Reset the working directory
-            Directory.SetCurrentDirectory(wDir);
         }
 
 
