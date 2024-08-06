@@ -11,7 +11,7 @@ namespace TSTestTool.TSPackage;
 
 internal class Package(DirectoryInfo Folder)
 {
-    private readonly PackageIntegrityRunner runner = new();
+    public readonly PackageIntegrityRunner runner = new();
 
     protected static string[] Overrides = [
         "plugins",
@@ -24,7 +24,10 @@ internal class Package(DirectoryInfo Folder)
     public void RunChecks(bool Print = true)
     {
 
+        var dir = Directory.GetCurrentDirectory();
+        Directory.SetCurrentDirectory(Folder.FullName);
         runner.RunChecks();
+        Directory.SetCurrentDirectory(dir);
 
         Console.WriteLine("-----------------------------------------------");
         Console.Write("  Checking Package [");
