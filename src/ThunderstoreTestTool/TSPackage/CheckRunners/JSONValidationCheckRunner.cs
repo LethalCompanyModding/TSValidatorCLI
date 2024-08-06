@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Text;
 using System.Text.Json;
 using dev.mamallama.checkrunnerlib.Checks;
 using dev.mamallama.checkrunnerlib.CheckRunners;
@@ -9,14 +8,14 @@ using TSTestTool.TSPackage.Checks;
 
 namespace TSTestTool.TSPackage.CheckRunners;
 
-internal class JSONValidationCheckRunner(string FileName, CheckStatus ErrorLevel = CheckStatus.Fatal) : BaseTSCheckRunner(ErrorLevel)
+internal class JSONValidationCheckRunner(string FileName) : BaseTSCheckRunner()
 {
     protected string FileName = FileName;
     public override string CheckID => "JSON Validation";
 
     public override ICheckRunner[] MyChecks => checks;
     private readonly BaseTSCheck[] checks = [
-        new FileExistsCheck("manifest.json", CheckStatus.Failed),
+        new FileExistsCheck("manifest.json"){ErrorLevel = CheckStatus.Failed},
         new JSONFieldValidationCheck("name"),
         new JSONFieldValidationCheck("description"),
         new JSONFieldValidationCheck("version_number"),

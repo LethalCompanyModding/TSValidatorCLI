@@ -6,7 +6,7 @@ using dev.mamallama.checkrunnerlib.CheckRunners;
 namespace TSTestTool.TSPackage.Checks;
 
 
-internal abstract class BaseTSCheck(CheckStatus ErrorLevel = CheckStatus.Fatal) : BaseTSCheckRunner(ErrorLevel)
+internal abstract class BaseTSCheck : BaseTSCheckRunner
 {
     public override ICheckRunner[] MyChecks => [];
 }

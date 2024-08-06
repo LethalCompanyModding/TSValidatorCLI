@@ -6,15 +6,15 @@ using System.IO;
 
 namespace TSTestTool.TSPackage.CheckRunners;
 
-internal class PNGValidatorRunner(string FileName, CheckStatus ErrorLevel = CheckStatus.Fatal) : BaseTSCheckRunner(ErrorLevel)
+internal class PNGValidatorRunner(string FileName) : BaseTSCheckRunner
 {
     public override string CheckID => "PNG Validator";
     public override ICheckRunner[] MyChecks => checks;
     private readonly BaseTSCheck[] checks = [
-        new FileExistsCheck("icon.png", ErrorLevel),
-        new PNGHeaderValidationCheck(ErrorLevel),
-        new PNGWidthValidationCheck(ErrorLevel),
-        new PNGHeightValidationCheck(ErrorLevel),
+        new FileExistsCheck("icon.png"),
+        new PNGHeaderValidationCheck(),
+        new PNGWidthValidationCheck(),
+        new PNGHeightValidationCheck(),
     ];
 
     public override void RunChecks()
