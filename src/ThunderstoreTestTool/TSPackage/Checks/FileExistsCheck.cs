@@ -4,7 +4,7 @@ using dev.mamallama.checkrunnerlib.Checks;
 
 namespace TSTestTool.TSPackage.Checks;
 
-internal class FileExistsCheck(string FileName, CheckStatus ErrorLevel = CheckStatus.Fatal) : BaseTSCheck(ErrorLevel)
+internal class FileExistsCheck(string FileName) : BaseTSCheck
 {
     protected string FileName = FileName;
     public override string CheckID => "File Exists";

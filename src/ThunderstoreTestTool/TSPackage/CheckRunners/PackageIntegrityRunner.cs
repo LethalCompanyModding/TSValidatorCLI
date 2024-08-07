@@ -3,7 +3,7 @@ using dev.mamallama.checkrunnerlib.Checks;
 
 namespace TSTestTool.TSPackage.CheckRunners;
 
-internal class PackageIntegrityRunner(CheckStatus ErrorLevel = CheckStatus.Fatal) : BaseTSCheckRunner(ErrorLevel)
+internal class PackageIntegrityRunner : BaseTSCheckRunner
 {
     public override string CheckID => "Package Integrity Check";
     public override ICheckRunner[] MyChecks => checks;

@@ -5,7 +5,7 @@ using dev.mamallama.checkrunnerlib.Checks;
 
 namespace TSTestTool.TSPackage.Checks.PNGValidators;
 
-internal abstract class BasePNGValidationCheck(int Offset, byte[] matches, string Matching = "Buffer", CheckStatus ErrorLevel = CheckStatus.Fatal) : BaseTSCheck(ErrorLevel)
+internal abstract class BasePNGValidationCheck(int Offset, byte[] matches, string Matching = "Buffer") : BaseTSCheck
 {
     public byte[] Data = [];
     private readonly int Offset = Offset;
